@@ -11,7 +11,7 @@ int main (int argc, char *argv[])
     char outputFile[] = "-o";
     char blockNum[] = "-b";
 
-    char *buffer = malloc(sizeof(char) * 10001);
+    char *buffer = (char*)calloc(10001, sizeof(char));
     char comparisonStringIn[] = "stdin";
     char comparisonStringOut[] = "stdout";
     //fd in & out
@@ -119,19 +119,21 @@ int main (int argc, char *argv[])
     while((numBytes = read(fileDescIn, buffer, 10000)) > 0)
 
         close(fileDescIn);
-        buffer[1001] = '\0';
+        buffer[strlen(buffer) - 2] = '\0';
 
-    char userInput[strlen(buffer) - 2];
+    char userInput[strlen(buffer) + 1];
 
-    for (int j = 0; j <= (strlen(buffer) - 2); j++)
+    for (int j = 0; j <= strlen(buffer); j++)
     {
         userInput[j] = buffer[j];
     }
 
-    userInput[strlen(buffer) - 2] = '\0';
-
-    char tempCharArray[b + 1];
+    char* tempCharArray = (char*)calloc((strlen(userInput) + 1), sizeof(char));
     int lastElement = b - 1;
+
+    if(strlen(userInput) < b){
+        lastElement = strlen(userInput) - 1;
+    }
 
     for (int j = 0; j <= strlen(userInput); j++)
     {
@@ -141,8 +143,7 @@ int main (int argc, char *argv[])
             {
                 tempCharArray[lastElement--] = userInput[k];
             }
-            printf("test\n");
-            write(fileDescOut, tempCharArray, b);
+            write(fileDescOut, tempCharArray, strlen(tempCharArray));
         }
     }
 }
