@@ -132,7 +132,7 @@ int main (int argc, char *argv[])
     // user provides string of characters to reverse
     if(fileDescIn == 0)
     {
-        write(1, "Please enter a string of letters. Press ENTER when finished.\n", 61);
+        write(1, "Please enter a string of letters. Press ENTER when finished.\n", 62);
     }
 
     // read input and store in buffer
@@ -157,9 +157,19 @@ int main (int argc, char *argv[])
 
     // malloc for number of arrays because it won't change. calloc for arrays because one might not be full
     char **userInput = malloc(numBlocks * sizeof(char*));
+    if(!userInput)
+    {
+        write(STDERR_FILENO, "Could not create pointer array...exiting\n", 40);
+        exit(1);
+    }
     for(int j = 0; j < numBlocks; j++)
     {
         userInput[j] = (char*) calloc((b + 1), sizeof(char));
+        if(!userInput[j])
+        {
+        write(STDERR_FILENO, "Could not create block arrays...exiting\n", 41);
+        exit(1);
+        }
     }
 
     // filling arrays with user input
@@ -196,5 +206,9 @@ int main (int argc, char *argv[])
         strcpy(tempPrintArray, userInput[j]);
         write(fileDescOut, tempPrintArray, strlen(tempPrintArray));
     }
+    free(buffer);
+    free(i);
+    free(o);
+    free(userInput);
 }
 
