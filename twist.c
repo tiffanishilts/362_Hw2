@@ -13,6 +13,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <errno.h>
 
 int main (int argc, char *argv[])
 {
@@ -67,7 +68,7 @@ int main (int argc, char *argv[])
     {
         if(strcmp(inputFile, argv[j]) == 0)
         {
-            i = (argv[j+1]);
+            i = argv[j+1];
         }
         else if(strcmp(outputFile, argv[j]) == 0)
         {
@@ -89,7 +90,7 @@ int main (int argc, char *argv[])
     // file has been entered by user
     if((strcmp(comparisonStringIn, i)) != 0)
     {
-        fileDescIn = open("i", O_RDONLY);
+        fileDescIn = open(i, O_RDONLY);
 
         if (fileDescIn < 0)
         {
@@ -107,7 +108,7 @@ int main (int argc, char *argv[])
     // file has been entered by user
     if((strcmp(comparisonStringOut, o)) != 0)
     {
-        fileDescOut = open("o", O_WRONLY);
+        fileDescOut = open(o, O_WRONLY);
 
         if (fileDescOut < 0)
         {
