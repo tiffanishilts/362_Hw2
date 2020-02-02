@@ -1,5 +1,5 @@
 /*Program written by Tiffani Shilts Winter 2020. This program is c99 compliant.
-  Twist: This program accepts user input via argc and argv. User is allowed to provide: -i input preference (either
+  Twist: This program accepts user input via argv, and read(). User is allowed to provide: -i input preference (either
   stdin or file), -o output preference (either stdout or file), and -b the number with which to divide the input
   string by in order to parse it. User provides a string of characters through preferred method. Using the default
   or specified block size, the string is parsed into blocks of letters which are then reversed and output to the
@@ -23,6 +23,11 @@ int main (int argc, char *argv[])
     char blockNum[] = "-b";
     // buffer for read
     char *buffer = (char*)calloc(10001, sizeof(char));
+    if (!buffer)
+    {
+        write(STDERR_FILENO, "Could not create buffer...exiting\n", 35);
+        exit(1);
+    }
     //comparison for fd number
     char comparisonStringIn[] = "stdin";
     char comparisonStringOut[] = "stdout";
@@ -123,6 +128,9 @@ int main (int argc, char *argv[])
         fileDescOut = 1;        //STDOUT
     }
 
+    free(o);
+    free(i);
+
     // encouragement
     if (fileDescIn != 0)
     {
@@ -167,8 +175,8 @@ int main (int argc, char *argv[])
         userInput[j] = (char*) calloc((b + 1), sizeof(char));
         if(!userInput[j])
         {
-        write(STDERR_FILENO, "Could not create block arrays...exiting\n", 41);
-        exit(1);
+            write(STDERR_FILENO, "Could not create block arrays...exiting\n", 41);
+            exit(1);
         }
     }
 
@@ -185,6 +193,8 @@ int main (int argc, char *argv[])
 
         }
     }
+
+    free(buffer);
 
     // reversing blocks
     for(int j = 0; j < numBlocks; j++)
@@ -206,9 +216,7 @@ int main (int argc, char *argv[])
         strcpy(tempPrintArray, userInput[j]);
         write(fileDescOut, tempPrintArray, strlen(tempPrintArray));
     }
-    free(buffer);
-    free(i);
-    free(o);
+
     free(userInput);
 }
 
