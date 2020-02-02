@@ -132,7 +132,7 @@ int main (int argc, char *argv[])
     // user provides string of characters to reverse
     if(fileDescIn == 0)
     {
-        write(1, "Please enter a string of letters. Press ENTER when finished\n", 61);
+        write(1, "Please enter a string of letters. Press ENTER when finished.\n", 61);
     }
 
     // read input and store in buffer
