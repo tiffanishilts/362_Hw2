@@ -138,6 +138,7 @@ int main (int argc, char *argv[])
     {
         write(1, "Please enter a string of letters. Press ENTER when finished.\n", 62);
     }
+
     // read input and store in buffer
     while((numBytes = read(fileDescIn, buffer, 10000)) > 0)
         close(fileDescIn);
